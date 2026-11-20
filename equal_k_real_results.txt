@@ -1,0 +1,24 @@
+ESM t=inf: hierarchy clusters mean=108.10 min=82.00 max=127.00; largest mean=0.13 min=0.08 max=0.19; singletons mean=53.00 min=39.00 max=69.00
+ESM t=inf: flat k-means, same k: largest mean=0.08 min=0.06 max=0.17; singletons mean=53.50 min=39.00 max=63.00
+ESM t=0.0: hierarchy clusters mean=24.40 min=19.00 max=28.00; largest mean=0.24 min=0.12 max=0.43; singletons mean=6.60 min=5.00 max=9.00
+ESM t=0.0: flat k-means, same k: largest mean=0.52 min=0.39 max=0.65; singletons mean=10.00 min=7.00 max=13.00
+ESM t=0.1: hierarchy clusters mean=42.40 min=37.00 max=55.00; largest mean=0.13 min=0.09 max=0.22; singletons mean=11.60 min=8.00 max=15.00
+ESM t=0.1: flat k-means, same k: largest mean=0.31 min=0.16 max=0.45; singletons mean=18.30 min=11.00 max=28.00
+ESM t=0.25: hierarchy clusters mean=64.90 min=46.00 max=82.00; largest mean=0.13 min=0.07 max=0.23; singletons mean=21.10 min=11.00 max=32.00
+ESM t=0.25: flat k-means, same k: largest mean=0.19 min=0.11 max=0.28; singletons mean=30.20 min=17.00 max=37.00
+StackExchange t=inf: hierarchy clusters mean=55.00 min=46.00 max=64.00; largest mean=0.07 min=0.06 max=0.09; singletons mean=26.60 min=15.00 max=38.00
+StackExchange t=inf: flat k-means, same k: largest mean=0.10 min=0.08 max=0.15; singletons mean=29.40 min=15.00 max=39.00
+StackExchange t=0.0: hierarchy clusters mean=20.80 min=10.00 max=28.00; largest mean=0.22 min=0.11 max=0.37; singletons mean=4.30 min=1.00 max=8.00
+StackExchange t=0.0: flat k-means, same k: largest mean=0.35 min=0.21 max=0.51; singletons mean=7.00 min=2.00 max=13.00
+StackExchange t=0.1: hierarchy clusters mean=48.70 min=37.00 max=55.00; largest mean=0.11 min=0.08 max=0.13; singletons mean=20.80 min=10.00 max=30.00
+StackExchange t=0.1: flat k-means, same k: largest mean=0.14 min=0.07 max=0.36; singletons mean=23.90 min=16.00 max=30.00
+StackExchange t=0.25: hierarchy clusters mean=61.30 min=46.00 max=82.00; largest mean=0.08 min=0.06 max=0.09; singletons mean=32.60 min=14.00 max=55.00
+StackExchange t=0.25: flat k-means, same k: largest mean=0.10 min=0.06 max=0.15; singletons mean=35.40 min=18.00 max=55.00
+LKML t=inf: hierarchy clusters mean=226.00 min=172.00 max=262.00; largest mean=0.19 min=0.09 max=0.38; singletons mean=95.20 min=76.00 max=110.00
+LKML t=inf: flat k-means, same k: largest mean=0.20 min=0.13 max=0.28; singletons mean=99.30 min=71.00 max=116.00
+LKML t=0.0: hierarchy clusters mean=28.00 min=28.00 max=28.00; largest mean=0.17 min=0.13 max=0.23; singletons mean=2.50 min=1.00 max=5.00
+LKML t=0.0: flat k-means, same k: largest mean=0.73 min=0.66 max=0.82; singletons mean=8.70 min=6.00 max=12.00
+LKML t=0.1: hierarchy clusters mean=109.90 min=91.00 max=145.00; largest mean=0.21 min=0.12 max=0.32; singletons mean=21.50 min=14.00 max=27.00
+LKML t=0.1: flat k-means, same k: largest mean=0.37 min=0.31 max=0.48; singletons mean=45.10 min=34.00 max=64.00
+LKML t=0.25: hierarchy clusters mean=146.80 min=127.00 max=163.00; largest mean=0.17 min=0.12 max=0.27; singletons mean=43.70 min=36.00 max=56.00
+LKML t=0.25: flat k-means, same k: largest mean=0.30 min=0.21 max=0.36; singletons mean=61.40 min=47.00 max=73.00

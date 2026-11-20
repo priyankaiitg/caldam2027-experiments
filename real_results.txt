@@ -1,0 +1,25 @@
+ESM: n=401 N=28 volume min=10 median=21 max=3404
+  tail index alpha=1.24 (s.e. 0.09), xmin=21, tail size=205, KS=0.033; range over cut-offs 1.04 to 1.54
+  depth 1 largest: mean=0.85 min=0.81 max=0.94 over 10 runs
+  depth 1 singletons: mean=5.50 min=4.00 max=7.00 over 10 runs
+  depth 2 largest: mean=0.40 min=0.29 max=0.64 over 10 runs
+  depth 3 largest: mean=0.13 min=0.08 max=0.19 over 10 runs
+  depth 3 clusters: mean=108.10 min=82.00 max=127.00 over 10 runs
+  depth 3 singletons: mean=53.00 min=39.00 max=69.00 over 10 runs
+StackExchange: n=131 N=66 volume min=10 median=14 max=201
+  tail index alpha=1.87 (s.e. 0.26), xmin=16, tail size=52, KS=0.047; range over cut-offs 1.77 to 2.13
+  depth 1 largest: mean=0.53 min=0.28 max=0.69 over 10 runs
+  depth 1 singletons: mean=1.80 min=1.00 max=3.00 over 10 runs
+  depth 2 largest: mean=0.20 min=0.11 max=0.34 over 10 runs
+  depth 3 largest: mean=0.07 min=0.06 max=0.09 over 10 runs
+  depth 3 clusters: mean=55.00 min=46.00 max=64.00 over 10 runs
+  depth 3 singletons: mean=26.60 min=15.00 max=38.00 over 10 runs
+LKML: n=3954 N=100 volume min=11 median=27 max=3885
+  tail index alpha=1.41 (s.e. 0.08), xmin=190, tail size=326, KS=0.038; range over cut-offs 0.82 to 2.26
+  depth 1 largest: mean=0.90 min=0.86 max=0.95 over 10 runs
+  depth 1 singletons: mean=2.30 min=1.00 max=4.00 over 10 runs
+  depth 2 largest: mean=0.57 min=0.44 max=0.73 over 10 runs
+  depth 3 largest: mean=0.19 min=0.09 max=0.38 over 10 runs
+  depth 3 clusters: mean=226.00 min=172.00 max=262.00 over 10 runs
+  depth 3 singletons: mean=95.20 min=76.00 max=110.00 over 10 runs
+ESM local search baseline (11 medians, saved assignment): sizes=[304, 33, 30, 17, 9, 2, 2, 1, 1, 1, 1] largest=0.76 singletons=4

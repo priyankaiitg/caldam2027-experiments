@@ -1,0 +1,15 @@
+Parseval: identical partitions time vs DFT (same seeds): True
+Consistency closed form: max abs error over 400 users = 1.33e-15
+Consistency of constant series = 5.2915, sqrt(N) = 5.2915
+Unconjugated dot identity F x . F y = N <x, R y>: max abs error = 9.34e-10
+
+alpha | flat: largest frac | flat: singletons | hier(delta=0): #clusters, largest frac | hier(delta=inf): #clusters, largest frac
+1.0 | 0.95 | 7.2 | 16.3, 0.74 | 50.5, 0.46
+1.5 | 0.87 | 5.0 | 27.3, 0.24 | 96.0, 0.21
+2.5 | 0.64 | 2.2 | 28.2, 0.14 | 151.1, 0.09
+4.0 | 0.48 | 0.5 | 28.4, 0.12 | 166.8, 0.07
+
+Scaling in n (flat k-means, 5 restarts, 20 draws): mean number of users outside the largest cluster
+alpha | n=200 | n=800 | n=3200 | n=12800
+1.2 | 26.6 | 39.5 | 84.3 | 116.4
+4.0 | 103.8 | 423.1 | 1665.8 | 6772.2

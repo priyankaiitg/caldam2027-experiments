@@ -1,0 +1,16 @@
+\begin{table}[h]
+\centering
+\caption{Synthetic data ($n=400$, $N=28$, $k=10$, means over $40$ draws). ``Largest'' is the share of users in the largest cluster, and ``clusters'' is the number of final clusters.}\label{tab:synth}
+\begin{tabular}{lcccccc}
+\toprule
+& \multicolumn{2}{c}{Flat $k$-means} & \multicolumn{2}{c}{Hierarchy, $\delta=0$} & \multicolumn{2}{c}{Hierarchy, $\delta=\infty$} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}
+$\alpha$ & largest & singletons & clusters & largest & clusters & largest \\
+\midrule
+1.0 & 0.95 & 7.2 & 16.3 & 0.74 & 50.5 & 0.46 \\
+1.5 & 0.87 & 5.0 & 27.3 & 0.24 & 96.0 & 0.21 \\
+2.5 & 0.64 & 2.2 & 28.2 & 0.14 & 151.1 & 0.09 \\
+4.0 & 0.48 & 0.5 & 28.4 & 0.12 & 166.8 & 0.07 \\
+\bottomrule
+\end{tabular}
+\end{table}

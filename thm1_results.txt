@@ -1,0 +1,4 @@
+Theorem 1 check, random data points as initial centres, 20 samples:
+  identical final partitions, plain floating point: 3
+  identical final partitions, distances rounded to 1e-6 so that ties break the same way: 20
+  mean number of users exactly tied between their two nearest initial centres: 18.9
