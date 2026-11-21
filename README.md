@@ -28,6 +28,7 @@ Requirements: Python 3 with NumPy. Every script uses a fixed seed and writes a r
 4. Further experiments: checks of Theorems 1 and 4, the tail index of each real dataset, the comparison at
    an equal number of clusters, Zipfian volumes, and exact optima in one dimension.
 5. Implementation notes on the code of the earlier paper (also below).
+6. Further related work.
 
 ## Data
 

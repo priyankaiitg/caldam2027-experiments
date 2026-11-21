@@ -22,7 +22,7 @@
 \newcommand{\opt}{\mathrm{OPT}}
 \begin{document}
 \maketitle
-\noindent This supplement accompanies the CALDAM 2027 paper of the same title. Section~\ref{s:proofs} contains the proofs that the paper omits for lack of space. Sections~\ref{s:results} to~\ref{s:impl} contain further results, remarks, experiments and implementation notes. Results of the paper are cited by their numbers there, and results stated only here are numbered S1, S2 and so on.
+\noindent This supplement accompanies the CALDAM 2027 paper of the same title. Section~\ref{s:proofs} contains the proofs that the paper omits for lack of space. Sections~\ref{s:results} to~\ref{s:related} contain further results, remarks, experiments, implementation notes and related work. Results of the paper are cited by their numbers there, and results stated only here are numbered S1, S2 and so on.
 
 \paragraph{Notation.} There are $n$ users and $N$ months. User $i$ is described by the vector $x_i\in\mathbb{Z}_{\ge0}^N$ of monthly post counts, with support $\supp(x_i)=\{t:x_{i,t}>0\}$. For $u,v\in\C^N$, $\ip{u}{v}=\sum_t\overline{u_t}\,v_t$ and $\norm{u}_2^2=\ip{u}{u}$. The discrete Fourier transform is $(\F x)_f=\sum_{t=0}^{N-1}x_t\,e^{-2\pi\mathrm{i}ft/N}$. For a cluster $T$, $I(T)$ is the weight of a minimum spanning tree of the complete graph on $T$ with the cosine similarities $w_{ij}=\ip{x_i}{x_j}/(\norm{x_i}\norm{x_j})$ as edge weights. The disjoint-activity graph $D_T$ has the users of $T$ as vertices, and $i$ and $j$ are joined when $\supp(x_i)\cap\supp(x_j)=\emptyset$. For $v\in\C^N$ with mean $\bar v$ let $s(v)^2=\frac1{N-1}\sum_f|v_f-\bar v|^2$, and let $\kappa_{\mathrm{sp}}(c)=1/s(c/\norm{c}_\infty)$ be the consistency score of a centre $c$. We write $\kappa(x)=\norm{x}_1/\norm{x}_2$.
 
@@ -205,12 +205,27 @@ where $u_i$ is either the count vector or its DFT. A C++ program runs Kruskal's 
 \item \emph{Baselines.} DTW clustering used the R package \texttt{dtwclust} in hierarchical mode with $30$ clusters. Local search used the code of~\cite{ocallaghan2002streaming}. That code minimises the sum of \emph{squared} Euclidean distances to the chosen medians, which is the $k$-means objective restricted to centres at data points.
 \end{itemize}
 
-\begin{thebibliography}{9}
+\section{Further related work}\label{s:related}
+
+This section collects related work that the paper does not have room to discuss.
+
+For data without heavy tails, a bias opposite to the giant cluster is documented: $k$-means tends to produce clusters of similar size~\cite{xiong2009kmeans}. Trimmed $k$-means and $k$-means with outliers, which the paper discusses, leave some points unserved. In our setting the points that trimming would discard are the heavy users, who are the most active members of the community, so we keep them and recurse instead. Spherical $k$-means~\cite{hornik2012spherical} clusters directions and ignores volume altogether, and it has been used for the extremes of heavy-tailed data~\cite{janssen2020extremes}. This removes the heavy tail, but it also merges a user with ten posts and a user with a thousand.
+
+The use of the DFT for time series goes back to similarity search~\cite{agrawal1993efficient}, where Parseval's rule lets an index keep a few coefficients and still bound the Euclidean distance~\cite{rafiei1997similarity,rafiei1998dft}. We use the same rule with all coefficients, which makes the transform exact and therefore neutral. The participation ratio $\kappa(x)^2$ is a classical sparsity measure, and Hoyer~\cite{hoyer2004nonnegative} uses a normalised variant.
+
+\begin{thebibliography}{99}
+\bibitem{agrawal1993efficient} Agrawal, R., Faloutsos, C., Swami, A.: Efficient similarity search in sequence databases. In: Foundations of Data Organization and Algorithms (FODO), pp. 69--84 (1993)
 \bibitem{agrawal2005ppolap} Agrawal, R., Srikant, R., Thomas, D.: Privacy preserving OLAP. In: Proceedings of the 2005 ACM SIGMOD International Conference on Management of Data, pp. 251--262 (2005)
 \bibitem{arthur2007kmeanspp} Arthur, D., Vassilvitskii, S.: k-means++: The advantages of careful seeding. In: Proceedings of the 18th Annual ACM-SIAM Symposium on Discrete Algorithms (SODA), pp. 1027--1035 (2007)
 \bibitem{banerjee2005bregman} Banerjee, A., Merugu, S., Dhillon, I.S., Ghosh, J.: Clustering with Bregman divergences. Journal of Machine Learning Research 6, 1705--1749 (2005)
+\bibitem{hornik2012spherical} Hornik, K., Feinerer, I., Kober, M., Buchta, C.: Spherical k-means clustering. Journal of Statistical Software 50(10), 1--22 (2012)
+\bibitem{hoyer2004nonnegative} Hoyer, P.O.: Non-negative matrix factorization with sparseness constraints. Journal of Machine Learning Research 5, 1457--1469 (2004)
+\bibitem{janssen2020extremes} Jan{\ss}en, A., Wan, P.: k-means clustering of extremes. Electronic Journal of Statistics 14(1), 1211--1233 (2020)
 \bibitem{kruskal1956shortest} Kruskal, J.B.: On the shortest spanning subtree of a graph and the traveling salesman problem. Proceedings of the American Mathematical Society 7(1), 48--50 (1956)
 \bibitem{ocallaghan2002streaming} O'Callaghan, L., Mishra, N., Meyerson, A., Guha, S., Motwani, R.: Streaming-data algorithms for high-quality clustering. In: Proceedings of the 18th International Conference on Data Engineering (ICDE), pp. 685--694 (2002)
+\bibitem{rafiei1997similarity} Rafiei, D., Mendelzon, A.O.: Similarity-based queries for time series data. In: Proceedings of the 1997 ACM SIGMOD International Conference on Management of Data, pp. 13--25 (1997)
+\bibitem{rafiei1998dft} Rafiei, D., Mendelzon, A.O.: Efficient retrieval of similar time sequences using DFT. In: Proceedings of the 5th International Conference on Foundations of Data Organization (FODO) (1998)
 \bibitem{sinha2020hierarchical} Sinha, P., Dey, L., Mitra, P., Thomas, D.: A hierarchical clustering algorithm for characterizing social media users. In: Companion Proceedings of the Web Conference 2020, pp. 353--362. ACM (2020)
+\bibitem{xiong2009kmeans} Xiong, H., Wu, J., Chen, J.: K-means clustering versus validation measures: A data-distribution perspective. IEEE Transactions on Systems, Man, and Cybernetics, Part B 39(2), 318--331 (2009)
 \end{thebibliography}
 \end{document}
