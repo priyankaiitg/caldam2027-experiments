@@ -31,7 +31,7 @@
 \tableofcontents
 
 \section*{Notation and model}
-There are $n$ users and $N$ months. User $i$ is described by the vector $x_i\in\mathbb{Z}_{\ge0}^N$ of monthly post counts, with support $\supp(x_i)=\{t:x_{i,t}>0\}$. For $u,v\in\C^N$, $\ip{u}{v}=\sum_t\overline{u_t}\,v_t$ and $\norm{u}_2^2=\ip{u}{u}$. The discrete Fourier transform is $(\F x)_f=\sum_{t=0}^{N-1}x_t\,e^{-2\pi\mathrm{i}ft/N}$. For a cluster $T$, $I(T)$ is the weight of a minimum spanning tree of the complete graph on $T$ with the cosine similarities $w_{ij}=\ip{x_i}{x_j}/(\norm{x_i}\norm{x_j})$ as edge weights. The disjoint-activity graph $D_T$ has the users of $T$ as vertices, and $i$ and $j$ are joined when $\supp(x_i)\cap\supp(x_j)=\emptyset$. For $v\in\C^N$ with mean $\bar v$ let $s(v)^2=\frac1{N-1}\sum_f|v_f-\bar v|^2$, and let $\kappa_{\mathrm{sp}}(c)=1/s(c/\norm{c}_\infty)$ be the consistency score of a centre $c$. We write $\kappa(x)=\norm{x}_1/\norm{x}_2$.
+There are $n$ users and $N$ months. User $i$ is described by the vector $x_i\in\mathbb{Z}_{\ge0}^N$ of monthly post counts, with support $\supp(x_i)=\{t:x_{i,t}>0\}$. For $u,v\in\C^N$, $\ip{u}{v}=\sum_t\overline{u_t}\,v_t$ and $\norm{u}_2^2=\ip{u}{u}$. The discrete Fourier transform is $(\F x)_f=\sum_{t=0}^{N-1}x_t\,e^{-2\pi\mathrm{i}ft/N}$. For a cluster $T$, $I(T)$ is the weight of a minimum spanning tree of the complete graph on $T$ with the cosine similarities $w_{ij}=\ip{x_i}{x_j}/(\norm{x_i}\norm{x_j})$ as edge weights. The disjoint-activity graph $D_T$ has the users of $T$ as vertices, and $i$ and $j$ are joined when $\supp(x_i)\cap\supp(x_j)=\emptyset$. For $v\in\C^N$ with mean $\bar v$ let $s(v)^2=\frac1{N-1}\sum_f|v_f-\bar v|^2$, and let $\kappa_{\mathrm{sp}}(c)=1/s(c/\norm{c}_\infty)$ be the consistency score of a centre $c$. We write $\kappa(x)=\norm{x}_1/\norm{x}_2$. The square $\kappa(x)^2$ is the participation ratio. It satisfies $1\le\kappa^2\le|\supp(x)|$, with equality on the right exactly when $x$ is constant on its support. The DFT convention is that of Octave's \texttt{fft}, which was used in~\cite{sinha2020hierarchical}.
 
 \paragraph{Model.} Section~4 of the paper assumes that users are independent and identically distributed with $x_i=V_i\sigma_i$. The volume $V_i$ follows the Pareto law $\Pr[V>v]=v^{-\alpha}$ for $v\ge1$. The profile $\sigma_i\in\R^N_{\ge0}$ is independent of $V_i$ and satisfies $\norm{\sigma_i}_1=1$. We write $M_n=n^{1/\alpha}$ for the order of the largest volume among $n$ users, $\cost$ for the $k$-means cost and $\opt_k$ for its optimum.
 
@@ -43,10 +43,10 @@ There are $n$ users and $N$ months. User $i$ is described by the vector $x_i\in\
 Let $N\ge3$, let $e_t$ be the unit vector of month $t\in\{0,\dots,N-1\}$ and $a>0$. Here DTW is dynamic time warping with squared local cost, matched end points and no window constraint.
 (a) For $1\le s,t\le N-2$, $\mathrm{DTW}(ae_s,ae_t)=0$, whereas $\norm{ae_s-ae_t}_2^2=2a^2$ for $s\ne t$.
 (b) More generally, $\mathrm{DTW}(x,y)=0$ whenever $x$ and $y$ list the same sequence of values after consecutive repeats are merged.
-(c) Let $(S^hx)_t=x_{(t-h)\bmod N}$ be the cyclic shift by $h$ months. Then $|(\F S^hx)_f|=|(\F x)_f|$ for all $f$. So any distance computed from magnitude spectra is zero between $x$ and $S^hx$.
+(c) Let $(S^hx)_t=x_{(t-h)\bmod N}$ be the cyclic shift by $h$ months. Then $|(\F S^hx)_f|=|(\F x)_f|$ for all $f$. Hence any distance computed from magnitude spectra is zero between $x$ and $S^hx$.
 \end{result}
 \begin{proof}
-(b) Let $r_1,\dots,r_m$ be the common sequence of values. Match the $j$-th run of $x$ with the $j$-th run of $y$. This is a valid warping path, and it pairs only equal values, so its cost is zero. (a) For $1\le s,t\le N-2$ both vectors reduce to the sequence $0,a,0$. (c) $(\F S^hx)_f=e^{-2\pi\mathrm{i}fh/N}(\F x)_f$.
+(b) Let $r_1,\dots,r_m$ be the common sequence of values. Match the $j$-th run of $x$ with the $j$-th run of $y$: take any monotone path through the block formed by these two runs, and join consecutive blocks diagonally. This is a valid warping path, and it pairs only equal values, so its cost is zero. (a) For $1\le s,t\le N-2$ both vectors reduce to the sequence $0,a,0$. (c) $(\F S^hx)_f=e^{-2\pi\mathrm{i}fh/N}(\F x)_f$.
 \end{proof}
 
 \subsection*{Remarks on Theorem 1}
@@ -62,7 +62,7 @@ We ran Lloyd's algorithm on $X$ and on $\F X$ from the same random data points, 
 \section{Collapse of flat clustering under heavy tails (Section 4 of the paper)}\label{s:collapse}
 
 \subsection*{Remarks on Theorems 2 and 3}
-\paragraph{Reading Theorem 2.} Part (ii) says that, among centre sets that keep a centre near the origin, the objective cannot tell one partition of the ordinary users from another, to first order. Theorem~3 shows that optimal centre sets are of this kind at the scale that matters. With unsquared distances, as in a true $k$-median objective, the heavy users contribute about $M_n=n^{1/\alpha}$ and the ordinary users about $n$, so the tail dominates only when $\alpha<1$. The local search code of~\cite{ocallaghan2002streaming} also minimises squared distances, so part (ii) applies to it. We do not prove a giant-cluster theorem for these two variants.
+\paragraph{Reading Theorem 2.} Part (ii) says that, among centre sets that keep a centre near the origin, the objective cannot tell one partition of the ordinary users from another, to first order. Theorem~3 shows that optimal centre sets are of this kind at the scale that matters. With unsquared distances, as in a true $k$-median objective, the heavy users contribute about $M_n=n^{1/\alpha}$ and the ordinary users about $n$, so the tail dominates only when $\alpha<1$. The local search code of~\cite{ocallaghan2002streaming} also minimises squared distances, so part (ii) applies to it. We do not prove a giant-cluster theorem for these two variants, that is, for the $k$-median objective and for local search restricted to centres at data points.
 
 \paragraph{The constant of Theorem 3.} The exact optima of Section~\ref{s:experiments} suggest that the constant $K$ grows quickly with $k$. The proof suggests the same for $N$, because its constant $\eta$ shrinks with both.
 
@@ -70,9 +70,8 @@ We ran Lloyd's algorithm on $X$ and on $\F X$ from the same random data points, 
 
 \paragraph{The model and the data.} The results of Section~4 of the paper are for a continuous model. Real counts are integers, so the synthetic experiments add Poisson noise to the model.
 
-\subsection*{Tail domination under finite variance}
+\subsection*{The cost under finite variance}
 The following statement complements Theorem~2 of the paper, which treats the cost for general $\alpha$ in part (i) and for $\alpha<2$ in part (ii).
-\setcounter{proposition}{1}
 \begin{proposition}\label{prop:finite}
 Assume the model of Section~4 of the paper with $\alpha>2$, and fix $k$ and $\tau$. Then $\opt_k(X_n)/n$ converges almost surely to a positive constant. The fraction of $\sum_i\norm{x_i}^2$ that comes from the ordinary users $B_\tau=\{i:V_i\le\tau\}$ converges to a limit that is positive for every $\tau>1$ and tends to one as $\tau\to\infty$.
 \end{proposition}
@@ -122,8 +121,8 @@ because $\sum_fe^{-2\pi\mathrm{i}f(t+s)/N}$ equals $N$ when $t+s\equiv0\pmod N$ 
 \section{The consistency score (Section 6 of the paper)}\label{s:score}
 
 \subsection*{Proof of Theorem 4}
-\begin{result}{Theorem 4}
-Let $x\in\R^N_{\ge0}$ with $\norm{x}_2^2>x_0^2$. Then
+\begin{result}{Theorem 4 (Closed form)}
+Let $N\ge2$ and $x\in\R^N_{\ge0}$ with $\norm{x}_2^2>x_0^2$. Then
 \[
   \kappa_{\mathrm{sp}}(\F x)=\sqrt{\frac{N-1}{N}}\cdot\frac{\norm{x}_1}{\sqrt{\norm{x}_2^2-x_0^2}} .
 \]
@@ -133,7 +132,7 @@ Let $C=\F x$. Since $x\ge0$, $|C_f|\le\sum_tx_t=C_0=\norm{x}_1$, so $\norm{C}_\i
 \[
   s(c)^2=\frac{1}{N-1}\Big(\sum_f|c_f|^2-N|\bar c|^2\Big)=\frac{N}{N-1}\cdot\frac{\norm{x}_2^2-x_0^2}{\norm{x}_1^2}.
 \]
-\qed
+
 \end{proof}
 
 \subsection*{Range of the consistency score}
@@ -147,7 +146,6 @@ By Theorem~4. For (a), $x_0=0$ gives $|\supp(x)|\le N-1$, and $1\le\kappa^2\le|\
 \end{proof}
 
 \subsection*{Averaging and consistency}
-\setcounter{proposition}{0}
 \begin{proposition}[Averaging]\label{prop:avg}
 For non-negative $x_1,\dots,x_m$ with mean $\mu$, $\kappa(\mu)\ge\min_i\kappa(x_i)$. If the supports are pairwise disjoint and all $x_i$ have the same $\ell_1$ and $\ell_2$ norms, then $\kappa(\mu)=\sqrt m\,\kappa(x_1)$.
 \end{proposition}
@@ -249,7 +247,7 @@ $k$ & $n=200$ & $n=800$ & $n=3200$ & $n=12800$ \\
 \end{tabular}
 \end{table}
 
-The standard errors of the means at $n=12800$ are $0.5$, $4.1$, $16.5$ and $100$ for $k=2,3,5,10$. For $k=2$ and $k=3$ the means show no trend in $n$, as the theorem states. For $k=5$ the means at $n=3200$ and $n=12800$ are both $124$, with standard errors near $16$, so they are statistically indistinguishable, but two sample sizes do not establish a plateau. For $k=10$ it is still growing at $n=12800$, although the share of users outside the giant cluster falls from $44\%$ to $8.6\%$. Growth of the kind seen in Table~2 of the paper therefore need not be an effect of local optima. This suggests that $K$ grows quickly with $k$, and that for $k=10$ the limit is reached only at sample sizes much larger than ours.
+The standard errors of the means at $n=12800$ are $0.5$, $4.1$, $16.5$ and $100$ for $k=2,3,5,10$. For $k=2$ and $k=3$ the means show no trend in $n$, consistent with the theorem. For $k=5$ the means at $n=3200$ and $n=12800$ are both $124$, with standard errors near $16$, so they are statistically indistinguishable, but two sample sizes do not establish a plateau. For $k=10$ it is still growing at $n=12800$, although the share of users outside the giant cluster falls from $44\%$ to $8.6\%$. Growth of the kind seen in Table~2 of the paper therefore need not be an effect of local optima. This suggests that $K$ grows quickly with $k$, and that for $k=10$ the limit is reached only at sample sizes much larger than ours.
 
 \section{Implementation notes}\label{s:impl}
 These notes are based on the Octave, C++ and R code that accompanies~\cite{sinha2020hierarchical}.
