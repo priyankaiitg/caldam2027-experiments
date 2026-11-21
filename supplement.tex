@@ -22,7 +22,7 @@
 \newcommand{\opt}{\mathrm{OPT}}
 \begin{document}
 \maketitle
-\noindent This supplement accompanies the CALDAM 2027 paper of the same title. Section~\ref{s:proofs} contains the proofs that the paper omits for lack of space. Sections~\ref{s:results} to~\ref{s:related} contain further results, remarks, experiments, implementation notes and related work. Results of the paper are cited by their numbers there, and results stated only here are numbered S1, S2 and so on.
+\noindent This supplement accompanies the CALDAM 2027 paper of the same title. Section~\ref{s:proofs} contains the proofs that the paper omits for lack of space. Sections~\ref{s:results} to~\ref{s:related} contain further results, remarks, experiments, implementation notes, details of the experiments and related work. Results of the paper are cited by their numbers there, and results stated only here are numbered S1, S2 and so on.
 
 \paragraph{Notation.} There are $n$ users and $N$ months. User $i$ is described by the vector $x_i\in\mathbb{Z}_{\ge0}^N$ of monthly post counts, with support $\supp(x_i)=\{t:x_{i,t}>0\}$. For $u,v\in\C^N$, $\ip{u}{v}=\sum_t\overline{u_t}\,v_t$ and $\norm{u}_2^2=\ip{u}{u}$. The discrete Fourier transform is $(\F x)_f=\sum_{t=0}^{N-1}x_t\,e^{-2\pi\mathrm{i}ft/N}$. For a cluster $T$, $I(T)$ is the weight of a minimum spanning tree of the complete graph on $T$ with the cosine similarities $w_{ij}=\ip{x_i}{x_j}/(\norm{x_i}\norm{x_j})$ as edge weights. The disjoint-activity graph $D_T$ has the users of $T$ as vertices, and $i$ and $j$ are joined when $\supp(x_i)\cap\supp(x_j)=\emptyset$. For $v\in\C^N$ with mean $\bar v$ let $s(v)^2=\frac1{N-1}\sum_f|v_f-\bar v|^2$, and let $\kappa_{\mathrm{sp}}(c)=1/s(c/\norm{c}_\infty)$ be the consistency score of a centre $c$. We write $\kappa(x)=\norm{x}_1/\norm{x}_2$.
 
@@ -111,6 +111,14 @@ A centre can therefore look consistent only because its members burst at \emph{d
 \paragraph{The squared distance.} The squared distance violates the triangle inequality, but $k$-means never uses that inequality. The squared distance is a Bregman divergence, and for every Bregman divergence the mean is the best centre~\cite{banerjee2005bregman}. It also satisfies $\norm{x-z}^2\le2(\norm{x-y}^2+\norm{y-z}^2)$. Together with the optimality of the mean, this is what the $O(\log k)$ guarantee of $k$-means++ uses~\cite{arthur2007kmeanspp}.
 
 \paragraph{What a level of the hierarchy does.} By Corollary~1 each level removes a bounded number of heavy users. Heuristically, it also lowers the scale of the remaining giant cluster by a constant factor, and for data of a fixed size a few levels reach the scale of the typical user. This is what we observe in Section~7 of the paper, but we have no theorem for this positive part. As $n$ grows the number of levels has to grow as well. We conjecture that depth $\Theta(\log n)$ is necessary and sufficient before no cluster contains a constant fraction of the users.
+
+\paragraph{Reading Theorem 1.} Informally, the DFT rotates the data and stretches it by $\sqrt N$. Distances between users do not change relative to each other, so nothing about the clustering changes either. The DFT is still useful, because $|(\F c)_f|$ shows which periodicities dominate a centre $c$. The theorem also shows that the method is sensitive to timing. The modulus is taken after the coefficients are subtracted, so the phase is kept, and the phase encodes when activity happens.
+
+\paragraph{Reading Theorem 2.} Part (ii) says that, among centre sets that keep a centre near the origin, the objective cannot tell one partition of the ordinary users from another, to first order. Theorem~3 shows that optimal centre sets are of this kind at the scale that matters. With unsquared distances, as in a true $k$-median objective, the heavy users contribute about $M_n=n^{1/\alpha}$ and the ordinary users about $n$, so the tail dominates only when $\alpha<1$.
+
+\paragraph{The constant of Theorem 3.} The exact optima of Section~\ref{s:experiments} suggest that the constant $K$ grows quickly with $k$. The proof suggests the same for $N$, because its constant $\eta$ shrinks with both.
+
+\paragraph{Two ingredients that are not distances.} The method uses a squared distance, which violates the triangle inequality, and a similarity that is used as a ``dissimilarity''. The first is harmless, as the remark on the squared distance explains. For the second, a similarity is not a distance, and a minimum spanning tree over similarities selects the \emph{least} similar pairs. Propositions~3 and~4 show that the index still has an exact meaning.
 
 \section{Further experiments}\label{s:experiments}
 
@@ -205,27 +213,151 @@ where $u_i$ is either the count vector or its DFT. A C++ program runs Kruskal's 
 \item \emph{Baselines.} DTW clustering used the R package \texttt{dtwclust} in hierarchical mode with $30$ clusters. Local search used the code of~\cite{ocallaghan2002streaming}. That code minimises the sum of \emph{squared} Euclidean distances to the chosen medians, which is the $k$-means objective restricted to centres at data points.
 \end{itemize}
 
+\section{Further details}\label{s:details}
+
+\paragraph{Settings of the real-data experiments.} The hierarchy on the real datasets uses $k$-means++ seeding~\cite{arthur2007kmeanspp}, at most $200$ Lloyd iterations, ten restarts at the root and five in deeper calls, and it does not split clusters with at most $k$ users. Flat $k$-means with the same number of clusters keeps the best of five restarts. The tail index is estimated by maximum likelihood in the continuous approximation with the usual half-integer correction, with the lower cut-off chosen by the Kolmogorov-Smirnov criterion of Clauset et al.~\cite{clauset2009power}.
+
+\paragraph{Settings of the synthetic experiments.} Counts are $x_{i,t}\sim\mathrm{Poisson}(V_i\sigma_{i,t}N/4)$, where the factor $N/4=7$ gives the least active users about seven posts. Flat $k$-means uses at most $100$ Lloyd iterations. In Table~1 of the paper the number of singleton clusters of flat $k$-means grows from $0.5$ to $7.2$ as $\alpha$ falls from $4$ to $1$.
+
+\paragraph{The consistency score on the three datasets.} With $N=28$, $66$ and $100$ months, the value of the score for perfectly even activity is $\sqrt N=5.29$, $8.12$ and $10$. A user who posts evenly over many months scores high, and a user with one burst scores low.
+
+\paragraph{Cost of the diversity index.} With Prim's algorithm the index of a cluster $T$ takes $O(|T|^2N)$ time.
+
+\paragraph{Dynamic time warping in the earlier paper.} Proposition~1 covers only series of identical shape, so it shows the mechanism and not the size of the effect. It is in line with the report in~\cite{sinha2020hierarchical} that DTW put $5176$ of $5757$ kernel developers in one cluster, but it does not explain that number.
+
+\paragraph{A further open problem.} Besides the open problems named in the paper, we have no guarantee for the whole hierarchy under the objectives of~\cite{dasgupta2016cost,moseley2017approximation}.
+
 \section{Further related work}\label{s:related}
 
 This section collects related work that the paper does not have room to discuss.
 
 For data without heavy tails, a bias opposite to the giant cluster is documented: $k$-means tends to produce clusters of similar size~\cite{xiong2009kmeans}. Trimmed $k$-means and $k$-means with outliers, which the paper discusses, leave some points unserved. In our setting the points that trimming would discard are the heavy users, who are the most active members of the community, so we keep them and recurse instead. Spherical $k$-means~\cite{hornik2012spherical} clusters directions and ignores volume altogether, and it has been used for the extremes of heavy-tailed data~\cite{janssen2020extremes}. This removes the heavy tail, but it also merges a user with ten posts and a user with a thousand.
 
+The $k$-means method goes back to MacQueen~\cite{macqueen1967methods} and Lloyd~\cite{lloyd1982least}. Linde, Buzo and Gray~\cite{linde1980algorithm} extended Lloyd's iteration to general distortion measures, and Banerjee et al.~\cite{banerjee2005bregman} showed that the mean is the best centre for every Bregman divergence, so the iteration does not need a metric. Hartigan and Wong~\cite{hartigan1979kmeans} gave the other widely used heuristic. Graf and Luschgy~\cite{graf2000foundations} develop quantisation theory under moment conditions.
+
+On the comparison with Blanchard, Jaffe and Zhivotovskiy~\cite{blanchard2026consistency} in the paper, three further points. In their example with exponent $2$ and $k=2$, a centre lies beyond $c\sqrt n/\log n$ infinitely often. Their positive results need a finite optimal excess distortion, which by their Lemma~B.2 fails for $1<\alpha<2$, and for $\alpha\le1$ the mean is infinite. They also observe that Lloyd's algorithm does not always isolate outliers, in line with the remark in the paper that Theorem~3 does not cover its fixed points.
+
+For hierarchical clustering, Dasgupta~\cite{dasgupta2016cost} introduced a cost function and analysed a top-down heuristic based on sparsest cuts. Moseley and Wang~\cite{moseley2017approximation} gave a dual objective, showed that average linkage approximates it within a constant, and showed that bisecting $k$-means can approximate it poorly. Neither covers our stopping rule. That rule is built on a minimum spanning tree, the structure behind single linkage, whose consistency was studied by Hartigan~\cite{hartigan1981single}.
+
 The use of the DFT for time series goes back to similarity search~\cite{agrawal1993efficient}, where Parseval's rule lets an index keep a few coefficients and still bound the Euclidean distance~\cite{rafiei1997similarity,rafiei1998dft}. We use the same rule with all coefficients, which makes the transform exact and therefore neutral. The participation ratio $\kappa(x)^2$ is a classical sparsity measure, and Hoyer~\cite{hoyer2004nonnegative} uses a normalised variant.
 
 \begin{thebibliography}{99}
-\bibitem{agrawal1993efficient} Agrawal, R., Faloutsos, C., Swami, A.: Efficient similarity search in sequence databases. In: Foundations of Data Organization and Algorithms (FODO), pp. 69--84 (1993)
-\bibitem{agrawal2005ppolap} Agrawal, R., Srikant, R., Thomas, D.: Privacy preserving OLAP. In: Proceedings of the 2005 ACM SIGMOD International Conference on Management of Data, pp. 251--262 (2005)
-\bibitem{arthur2007kmeanspp} Arthur, D., Vassilvitskii, S.: k-means++: The advantages of careful seeding. In: Proceedings of the 18th Annual ACM-SIAM Symposium on Discrete Algorithms (SODA), pp. 1027--1035 (2007)
-\bibitem{banerjee2005bregman} Banerjee, A., Merugu, S., Dhillon, I.S., Ghosh, J.: Clustering with Bregman divergences. Journal of Machine Learning Research 6, 1705--1749 (2005)
-\bibitem{hornik2012spherical} Hornik, K., Feinerer, I., Kober, M., Buchta, C.: Spherical k-means clustering. Journal of Statistical Software 50(10), 1--22 (2012)
-\bibitem{hoyer2004nonnegative} Hoyer, P.O.: Non-negative matrix factorization with sparseness constraints. Journal of Machine Learning Research 5, 1457--1469 (2004)
-\bibitem{janssen2020extremes} Jan{\ss}en, A., Wan, P.: k-means clustering of extremes. Electronic Journal of Statistics 14(1), 1211--1233 (2020)
-\bibitem{kruskal1956shortest} Kruskal, J.B.: On the shortest spanning subtree of a graph and the traveling salesman problem. Proceedings of the American Mathematical Society 7(1), 48--50 (1956)
-\bibitem{ocallaghan2002streaming} O'Callaghan, L., Mishra, N., Meyerson, A., Guha, S., Motwani, R.: Streaming-data algorithms for high-quality clustering. In: Proceedings of the 18th International Conference on Data Engineering (ICDE), pp. 685--694 (2002)
-\bibitem{rafiei1997similarity} Rafiei, D., Mendelzon, A.O.: Similarity-based queries for time series data. In: Proceedings of the 1997 ACM SIGMOD International Conference on Management of Data, pp. 13--25 (1997)
-\bibitem{rafiei1998dft} Rafiei, D., Mendelzon, A.O.: Efficient retrieval of similar time sequences using DFT. In: Proceedings of the 5th International Conference on Foundations of Data Organization (FODO) (1998)
-\bibitem{sinha2020hierarchical} Sinha, P., Dey, L., Mitra, P., Thomas, D.: A hierarchical clustering algorithm for characterizing social media users. In: Companion Proceedings of the Web Conference 2020, pp. 353--362. ACM (2020)
-\bibitem{xiong2009kmeans} Xiong, H., Wu, J., Chen, J.: K-means clustering versus validation measures: A data-distribution perspective. IEEE Transactions on Systems, Man, and Cybernetics, Part B 39(2), 318--331 (2009)
+\providecommand{\doi}[1]{https://doi.org/\detokenize{#1}}
+
+\bibitem{agrawal1993efficient}
+Agrawal, R., Faloutsos, C., Swami, A.: Efficient similarity search in sequence
+  databases. In: Foundations of Data Organization and Algorithms (FODO). pp.
+  69--84 (1993). \doi{10.1007/3-540-57301-1_5}
+
+\bibitem{agrawal2005ppolap}
+Agrawal, R., Srikant, R., Thomas, D.: Privacy preserving {OLAP}. In:
+  Proceedings of the 2005 ACM SIGMOD International Conference on Management of
+  Data. pp. 251--262 (2005). \doi{10.1145/1066157.1066187}
+
+\bibitem{arthur2007kmeanspp}
+Arthur, D., Vassilvitskii, S.: k-means++: The advantages of careful seeding.
+  In: Proceedings of the 18th Annual ACM-SIAM Symposium on Discrete Algorithms
+  (SODA). pp. 1027--1035 (2007)
+
+\bibitem{banerjee2005bregman}
+Banerjee, A., Merugu, S., Dhillon, I.S., Ghosh, J.: Clustering with {B}regman
+  divergences. Journal of Machine Learning Research  \textbf{6},  1705--1749
+  (2005)
+
+\bibitem{blanchard2026consistency}
+Blanchard, M., Jaffe, A.Q., Zhivotovskiy, N.: Consistency and inconsistency in
+  $k$-means clustering. Electronic Journal of Statistics  \textbf{20}(2),
+  3291--3334 (2026). \doi{10.1214/26-EJS2557}
+
+\bibitem{clauset2009power}
+Clauset, A., Shalizi, C.R., Newman, M.E.J.: Power-law distributions in
+  empirical data. SIAM Review  \textbf{51}(4),  661--703 (2009).
+  \doi{10.1137/070710111}
+
+\bibitem{dasgupta2016cost}
+Dasgupta, S.: A cost function for similarity-based hierarchical clustering. In:
+  Proceedings of the 48th Annual ACM Symposium on Theory of Computing (STOC).
+  pp. 118--127 (2016). \doi{10.1145/2897518.2897527}
+
+\bibitem{graf2000foundations}
+Graf, S., Luschgy, H.: Foundations of Quantization for Probability
+  Distributions, Lecture Notes in Mathematics, vol.~1730. Springer (2000).
+  \doi{10.1007/BFb0103945}
+
+\bibitem{hartigan1981single}
+Hartigan, J.A.: Consistency of single linkage for high-density clusters.
+  Journal of the American Statistical Association  \textbf{76}(374),  388--394
+  (1981). \doi{10.1080/01621459.1981.10477658}
+
+\bibitem{hartigan1979kmeans}
+Hartigan, J.A., Wong, M.A.: Algorithm {AS} 136: A {K}-means clustering
+  algorithm. Journal of the Royal Statistical Society, Series C
+  \textbf{28}(1),  100--108 (1979). \doi{10.2307/2346830}
+
+\bibitem{hornik2012spherical}
+Hornik, K., Feinerer, I., Kober, M., Buchta, C.: Spherical k-means clustering.
+  Journal of Statistical Software  \textbf{50}(10),  1--22 (2012).
+  \doi{10.18637/jss.v050.i10}
+
+\bibitem{hoyer2004nonnegative}
+Hoyer, P.O.: Non-negative matrix factorization with sparseness constraints.
+  Journal of Machine Learning Research  \textbf{5},  1457--1469 (2004)
+
+\bibitem{janssen2020extremes}
+Jan{\ss}en, A., Wan, P.: k-means clustering of extremes. Electronic Journal of
+  Statistics  \textbf{14}(1),  1211--1233 (2020). \doi{10.1214/20-EJS1689}
+
+\bibitem{kruskal1956shortest}
+Kruskal, J.B.: On the shortest spanning subtree of a graph and the traveling
+  salesman problem. Proceedings of the American Mathematical Society
+  \textbf{7}(1),  48--50 (1956). \doi{10.1090/S0002-9939-1956-0078686-7}
+
+\bibitem{linde1980algorithm}
+Linde, Y., Buzo, A., Gray, R.M.: An algorithm for vector quantizer design. IEEE
+  Transactions on Communications  \textbf{28}(1),  84--95 (1980).
+  \doi{10.1109/TCOM.1980.1094577}
+
+\bibitem{lloyd1982least}
+Lloyd, S.P.: Least squares quantization in {PCM}. IEEE Transactions on
+  Information Theory  \textbf{28}(2),  129--137 (1982).
+  \doi{10.1109/TIT.1982.1056489}
+
+\bibitem{macqueen1967methods}
+MacQueen, J.: Some methods for classification and analysis of multivariate
+  observations. In: Proceedings of the Fifth Berkeley Symposium on Mathematical
+  Statistics and Probability. vol.~1, pp. 281--297 (1967)
+
+\bibitem{moseley2017approximation}
+Moseley, B., Wang, J.R.: Approximation bounds for hierarchical clustering:
+  Average linkage, bisecting k-means, and local search. In: Advances in Neural
+  Information Processing Systems 30 (NIPS). pp. 3094--3103 (2017)
+
+\bibitem{ocallaghan2002streaming}
+O'Callaghan, L., Mishra, N., Meyerson, A., Guha, S., Motwani, R.:
+  Streaming-data algorithms for high-quality clustering. In: Proceedings of the
+  18th International Conference on Data Engineering (ICDE). pp. 685--694
+  (2002). \doi{10.1109/ICDE.2002.994785}
+
+\bibitem{rafiei1997similarity}
+Rafiei, D., Mendelzon, A.O.: Similarity-based queries for time series data. In:
+  Proceedings of the 1997 ACM SIGMOD International Conference on Management of
+  Data. pp. 13--25 (1997). \doi{10.1145/253260.253264}
+
+\bibitem{rafiei1998dft}
+Rafiei, D., Mendelzon, A.O.: Efficient retrieval of similar time sequences
+  using {DFT}. In: Proceedings of the 5th International Conference on
+  Foundations of Data Organization (FODO) (1998), arXiv:cs/9809033
+
+\bibitem{sinha2020hierarchical}
+Sinha, P., Dey, L., Mitra, P., Thomas, D.: A hierarchical clustering algorithm
+  for characterizing social media users. In: Companion Proceedings of the Web
+  Conference 2020. pp. 353--362. ACM (2020). \doi{10.1145/3366424.3383296}
+
+\bibitem{xiong2009kmeans}
+Xiong, H., Wu, J., Chen, J.: K-means clustering versus validation measures: A
+  data-distribution perspective. IEEE Transactions on Systems, Man, and
+  Cybernetics, Part B  \textbf{39}(2),  318--331 (2009).
+  \doi{10.1109/TSMCB.2008.2004559}
+
 \end{thebibliography}
 \end{document}
