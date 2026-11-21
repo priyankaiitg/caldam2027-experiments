@@ -1,7 +1,7 @@
 """Synthetic data: the hierarchy with threshold delta = t (|T| - 1), and flat k-means with as many clusters as
 the hierarchy returned. Writes equal_k_synth_results.txt.
 The first stream replays run_experiments.py, so the samples and the hierarchies with delta = 0 and delta = inf
-are those of Table 3. The hierarchies with t = 0.1 and t = 0.25 and all flat runs with the same k use a second
+are those of the paper's synthetic results table. The hierarchies with t = 0.1 and t = 0.25 and all flat runs with the same k use a second
 stream on the same samples."""
 import numpy as np
 

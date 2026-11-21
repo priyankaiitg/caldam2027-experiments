@@ -1,6 +1,6 @@
 """Real data: the hierarchy with threshold delta = t (|T| - 1), and flat k-means with as many clusters as the
 hierarchy returned. Reads the count matrices under ../../src. Writes equal_k_real_results.txt.
-The runs with t = inf replay the random stream of real_data.py, so they are the depth-3 hierarchies of Table 1.
+The runs with t = inf replay the random stream of real_data.py, so they are the depth-3 hierarchies of the paper's real-data table.
 Everything else uses a second stream. k-means++ updates the minimum distance incrementally and Lloyd's algorithm
 computes distances in blocks of centres; both give the same values as real_data.py and only bound the memory."""
 import numpy as np

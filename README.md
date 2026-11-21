@@ -19,17 +19,20 @@ Requirements: Python 3 with NumPy. Every script uses a fixed seed and writes a r
 
 ## Supplement
 
-`supplement.pdf` (source: `supplement.tex`) contains everything that the 14-page paper leaves out:
+`supplement.pdf` (source: `supplement.tex`) contains everything that the 14-page paper leaves out. Its
+Sections S3 to S7 follow Sections 3 to 7 of the paper, with the same numbers.
 
-1. Proofs of Propositions 1, 3 and 4, Corollary 2 and Theorem 4. All other proofs are in the paper.
-2. Further results on the two scores: the conjugation remark, the range of the consistency score, and the
-   averaging proposition.
-3. Two remarks: the squared distance as a Bregman divergence, and what a level of the hierarchy does.
-4. Further experiments: checks of Theorems 1 and 4, the tail index of each real dataset, the comparison at
-   an equal number of clusters, Zipfian volumes, and exact optima in one dimension.
-5. Implementation notes on the code of the earlier paper (also below).
-6. Further details: settings of the experiments and other facts left out of the paper.
-7. Further related work.
+- S3, the method preserves timing: proof of Proposition 1, remarks on Theorem 1, a numerical check.
+- S4, collapse under heavy tails: remarks on Theorems 2 and 3, and the finite-variance statement
+  (Proposition S2).
+- S5, the diversity index: proofs of Proposition 3, Corollary 2 and Proposition 4, the conjugation remark
+  (Remark S1), remarks on the stopping rule.
+- S6, the consistency score: proof of Theorem 4, its range (Corollary S1), the averaging proposition
+  (Proposition S1), a numerical check.
+- S7, experiments: settings, the tail index of each real dataset, the comparison at an equal number of
+  clusters (Table S1), Zipfian volumes, exact optima in one dimension (Table S2).
+- S8, implementation notes on the code of the earlier paper (also below).
+- S9, further related work and an open problem.
 
 ## Data
 
