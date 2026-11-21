@@ -1,0 +1,69 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1in]{geometry}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\supp}{\mathrm{supp}}
+\newcommand{\ip}[2]{\langle #1, #2 \rangle}
+\newcommand{\norm}[1]{\lVert #1 \rVert}
+\newenvironment{result}[1]{\par\medskip\noindent\textbf{#1.}\ \itshape}{\par\smallskip}
+\title{Why Flat $k$-Means Collapses on Long-Tailed Activity Data\\[4pt]\large Supplement: proofs of Propositions 1, 3 and 4, Corollary 2 and Theorem 4}
+\author{Priyanka Sinha \and Dilys Thomas \and Nikolaos Kekatos \and Antonio Bruto da Costa \and Pabitra Mitra}
+\date{}
+\begin{document}
+\maketitle
+\noindent This supplement contains the proofs that the CALDAM 2027 paper omits for lack of space. The numbering of the results is that of the paper.
+
+\paragraph{Notation.} There are $n$ users and $N$ months. User $i$ is described by the vector $x_i\in\mathbb{Z}_{\ge0}^N$ of monthly post counts, with support $\supp(x_i)=\{t:x_{i,t}>0\}$. For $u,v\in\C^N$, $\ip{u}{v}=\sum_t\overline{u_t}\,v_t$ and $\norm{u}_2^2=\ip{u}{u}$. The discrete Fourier transform is $(\F x)_f=\sum_{t=0}^{N-1}x_t\,e^{-2\pi\mathrm{i}ft/N}$. For a cluster $T$, $I(T)$ is the weight of a minimum spanning tree of the complete graph on $T$ with the cosine similarities $w_{ij}=\ip{x_i}{x_j}/(\norm{x_i}\norm{x_j})$ as edge weights. The disjoint-activity graph $D_T$ has the users of $T$ as vertices, and $i$ and $j$ are joined when $\supp(x_i)\cap\supp(x_j)=\emptyset$. For $v\in\C^N$ with mean $\bar v$ let $s(v)^2=\frac1{N-1}\sum_f|v_f-\bar v|^2$, and let $\kappa_{\mathrm{sp}}(c)=1/s(c/\norm{c}_\infty)$ be the consistency score of a centre $c$.
+
+\section*{Section 3 of the paper}
+\begin{result}{Proposition 1 (Shift-invariant distances ignore timing)}
+Let $N\ge3$, let $e_t$ be the unit vector of month $t\in\{0,\dots,N-1\}$ and $a>0$. Here DTW is dynamic time warping with squared local cost, matched end points and no window constraint.
+(a) For $1\le s,t\le N-2$, $\mathrm{DTW}(ae_s,ae_t)=0$, whereas $\norm{ae_s-ae_t}_2^2=2a^2$ for $s\ne t$.
+(b) More generally, $\mathrm{DTW}(x,y)=0$ whenever $x$ and $y$ list the same sequence of values after consecutive repeats are merged.
+(c) Let $(S^hx)_t=x_{(t-h)\bmod N}$ be the cyclic shift by $h$ months. Then $|(\F S^hx)_f|=|(\F x)_f|$ for all $f$. So any distance computed from magnitude spectra is zero between $x$ and $S^hx$.
+\end{result}
+\begin{proof}
+(b) Let $r_1,\dots,r_m$ be the common sequence of values. Match the $j$-th run of $x$ with the $j$-th run of $y$. This is a valid warping path, and it pairs only equal values, so its cost is zero. (a) For $1\le s,t\le N-2$ both vectors reduce to the sequence $0,a,0$. (c) $(\F S^hx)_f=e^{-2\pi\mathrm{i}fh/N}(\F x)_f$.
+\end{proof}
+
+\section*{Section 5 of the paper}
+\begin{result}{Proposition 3 (When the index is zero)}
+$I(T)=0$ if and only if $D_T$ is connected.
+\end{result}
+\begin{proof}
+Since the counts are non-negative, $w_{ij}=0$ exactly when the supports are disjoint. So the edges of weight zero are the edges of $D_T$. All weights are non-negative, so a spanning tree has weight zero exactly when all its edges have weight zero. Such a tree exists exactly when $D_T$ is connected.
+\end{proof}
+
+\begin{result}{Corollary 2 (Co-activity cut)}
+If $I(T)>0$ then $T$ splits into two non-empty sides $A$ and $T\setminus A$ such that every user in $A$ shares an active month with every user in $T\setminus A$.
+\end{result}
+\begin{proof}
+By Proposition~3, $D_T$ is disconnected. Let $A$ be one of its connected components.
+\end{proof}
+
+\begin{result}{Proposition 4 (Range and geometry)}
+(a) $0\le I(T)\le|T|-1$, and $I(T)$ does not change when any user's counts are multiplied by a positive constant.
+(b) Let $\hat x_i=x_i/\norm{x_i}$ and $d_{ij}=\norm{\hat x_i-\hat x_j}$. Then $d$ is a metric on directions and $d_{ij}^2=2-2w_{ij}$. Every minimum spanning tree for $w$ is a maximum spanning tree for $d$, and conversely. Moreover $I(T)=(|T|-1)-\frac12W(T)$, where $W(T)$ is the weight of a maximum spanning tree under $d^2$.
+\end{result}
+\begin{proof}
+(a) Each of the $|T|-1$ tree edges has weight in $[0,1]$, and cosine similarity ignores scale. (b) Expand the square. The set of minimum spanning trees depends only on the order of the edge weights, because Kruskal's algorithm only compares them, and $w\mapsto2-2w$ reverses the order. Sum $w_{ij}=1-\frac12d_{ij}^2$ over the tree edges.
+\end{proof}
+
+\section*{Section 6 of the paper}
+\begin{result}{Theorem 4}
+Let $x\in\R^N_{\ge0}$ with $\norm{x}_2^2>x_0^2$. Then
+\[
+  \kappa_{\mathrm{sp}}(\F x)=\sqrt{\frac{N-1}{N}}\cdot\frac{\norm{x}_1}{\sqrt{\norm{x}_2^2-x_0^2}} .
+\]
+\end{result}
+\begin{proof}
+Let $C=\F x$. Since $x\ge0$, $|C_f|\le\sum_tx_t=C_0=\norm{x}_1$, so $\norm{C}_\infty=\norm{x}_1$. Write $c=C/\norm{x}_1$. The inverse DFT at $t=0$ gives $\bar c=\frac1N\sum_fc_f=x_0/\norm{x}_1$. By Lemma~1 of the paper (Parseval), $\sum_f|c_f|^2=N\norm{x}_2^2/\norm{x}_1^2$. Therefore
+\[
+  s(c)^2=\frac{1}{N-1}\Big(\sum_f|c_f|^2-N|\bar c|^2\Big)=\frac{N}{N-1}\cdot\frac{\norm{x}_2^2-x_0^2}{\norm{x}_1^2}.
+\]
+\qed
+\end{proof}
+\end{document}

@@ -17,6 +17,11 @@ Requirements: Python 3 with NumPy. Every script uses a fixed seed and writes a r
 | `make_tables.py` | `table.tex`, `table_scaling.tex` | Tables from `results.txt` |
 | `make_equal_k_tables.py` | `table_equal_k.tex` | Table from the two `equal_k_*_results.txt` files |
 
+## Supplement
+
+`supplement.pdf` (source: `supplement.tex`) contains the proofs of Propositions 1, 3 and 4, Corollary 2 and
+Theorem 4, which the paper omits for lack of space. All other proofs are in the paper.
+
 ## Data
 
 `real_data.py` and `equal_k_real.py` read three monthly count matrices (ESM, StackExchange, LKML) from
