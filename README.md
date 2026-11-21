@@ -19,8 +19,15 @@ Requirements: Python 3 with NumPy. Every script uses a fixed seed and writes a r
 
 ## Supplement
 
-`supplement.pdf` (source: `supplement.tex`) contains the proofs of Propositions 1, 3 and 4, Corollary 2 and
-Theorem 4, which the paper omits for lack of space. All other proofs are in the paper.
+`supplement.pdf` (source: `supplement.tex`, 7 pages) contains everything that the 14-page paper leaves out:
+
+1. Proofs of Propositions 1, 3 and 4, Corollary 2 and Theorem 4. All other proofs are in the paper.
+2. Further results on the two scores: the conjugation remark, the range of the consistency score, and the
+   averaging proposition.
+3. Two remarks: the squared distance as a Bregman divergence, and what a level of the hierarchy does.
+4. Further experiments: checks of Theorems 1 and 4, the tail index of each real dataset, the comparison at
+   an equal number of clusters, Zipfian volumes, and exact optima in one dimension.
+5. Implementation notes on the code of the earlier paper (also below).
 
 ## Data
 

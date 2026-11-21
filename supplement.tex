@@ -2,6 +2,7 @@
 \usepackage[T1]{fontenc}
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage[margin=1in]{geometry}
+\usepackage{booktabs}
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\C}{\mathbb{C}}
 \newcommand{\F}{\mathcal{F}}
@@ -9,16 +10,25 @@
 \newcommand{\ip}[2]{\langle #1, #2 \rangle}
 \newcommand{\norm}[1]{\lVert #1 \rVert}
 \newenvironment{result}[1]{\par\medskip\noindent\textbf{#1.}\ \itshape}{\par\smallskip}
-\title{Why Flat $k$-Means Collapses on Long-Tailed Activity Data\\[4pt]\large Supplement: proofs of Propositions 1, 3 and 4, Corollary 2 and Theorem 4}
+\title{Why Flat $k$-Means Collapses on Long-Tailed Activity Data\\[4pt]\large Supplement}
 \author{Priyanka Sinha \and Dilys Thomas \and Nikolaos Kekatos \and Antonio Bruto da Costa \and Pabitra Mitra}
 \date{}
+\newtheorem{corollary}{Corollary}\renewcommand{\thecorollary}{S\arabic{corollary}}
+\newtheorem{proposition}{Proposition}\renewcommand{\theproposition}{S\arabic{proposition}}
+\theoremstyle{remark}\newtheorem{remark}{Remark}\renewcommand{\theremark}{S\arabic{remark}}
+\renewcommand{\thetable}{S\arabic{table}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\cost}{\mathrm{cost}}
+\newcommand{\opt}{\mathrm{OPT}}
 \begin{document}
 \maketitle
-\noindent This supplement contains the proofs that the CALDAM 2027 paper omits for lack of space. The numbering of the results is that of the paper.
+\noindent This supplement accompanies the CALDAM 2027 paper of the same title. Section~\ref{s:proofs} contains the proofs that the paper omits for lack of space. Sections~\ref{s:results} to~\ref{s:impl} contain further results, remarks, experiments and implementation notes. Results of the paper are cited by their numbers there, and results stated only here are numbered S1, S2 and so on.
 
-\paragraph{Notation.} There are $n$ users and $N$ months. User $i$ is described by the vector $x_i\in\mathbb{Z}_{\ge0}^N$ of monthly post counts, with support $\supp(x_i)=\{t:x_{i,t}>0\}$. For $u,v\in\C^N$, $\ip{u}{v}=\sum_t\overline{u_t}\,v_t$ and $\norm{u}_2^2=\ip{u}{u}$. The discrete Fourier transform is $(\F x)_f=\sum_{t=0}^{N-1}x_t\,e^{-2\pi\mathrm{i}ft/N}$. For a cluster $T$, $I(T)$ is the weight of a minimum spanning tree of the complete graph on $T$ with the cosine similarities $w_{ij}=\ip{x_i}{x_j}/(\norm{x_i}\norm{x_j})$ as edge weights. The disjoint-activity graph $D_T$ has the users of $T$ as vertices, and $i$ and $j$ are joined when $\supp(x_i)\cap\supp(x_j)=\emptyset$. For $v\in\C^N$ with mean $\bar v$ let $s(v)^2=\frac1{N-1}\sum_f|v_f-\bar v|^2$, and let $\kappa_{\mathrm{sp}}(c)=1/s(c/\norm{c}_\infty)$ be the consistency score of a centre $c$.
+\paragraph{Notation.} There are $n$ users and $N$ months. User $i$ is described by the vector $x_i\in\mathbb{Z}_{\ge0}^N$ of monthly post counts, with support $\supp(x_i)=\{t:x_{i,t}>0\}$. For $u,v\in\C^N$, $\ip{u}{v}=\sum_t\overline{u_t}\,v_t$ and $\norm{u}_2^2=\ip{u}{u}$. The discrete Fourier transform is $(\F x)_f=\sum_{t=0}^{N-1}x_t\,e^{-2\pi\mathrm{i}ft/N}$. For a cluster $T$, $I(T)$ is the weight of a minimum spanning tree of the complete graph on $T$ with the cosine similarities $w_{ij}=\ip{x_i}{x_j}/(\norm{x_i}\norm{x_j})$ as edge weights. The disjoint-activity graph $D_T$ has the users of $T$ as vertices, and $i$ and $j$ are joined when $\supp(x_i)\cap\supp(x_j)=\emptyset$. For $v\in\C^N$ with mean $\bar v$ let $s(v)^2=\frac1{N-1}\sum_f|v_f-\bar v|^2$, and let $\kappa_{\mathrm{sp}}(c)=1/s(c/\norm{c}_\infty)$ be the consistency score of a centre $c$. We write $\kappa(x)=\norm{x}_1/\norm{x}_2$.
 
-\section*{Section 3 of the paper}
+
+\section{Proofs omitted from the paper}\label{s:proofs}
+\subsection*{Section 3 of the paper}
 \begin{result}{Proposition 1 (Shift-invariant distances ignore timing)}
 Let $N\ge3$, let $e_t$ be the unit vector of month $t\in\{0,\dots,N-1\}$ and $a>0$. Here DTW is dynamic time warping with squared local cost, matched end points and no window constraint.
 (a) For $1\le s,t\le N-2$, $\mathrm{DTW}(ae_s,ae_t)=0$, whereas $\norm{ae_s-ae_t}_2^2=2a^2$ for $s\ne t$.
@@ -29,7 +39,7 @@ Let $N\ge3$, let $e_t$ be the unit vector of month $t\in\{0,\dots,N-1\}$ and $a>
 (b) Let $r_1,\dots,r_m$ be the common sequence of values. Match the $j$-th run of $x$ with the $j$-th run of $y$. This is a valid warping path, and it pairs only equal values, so its cost is zero. (a) For $1\le s,t\le N-2$ both vectors reduce to the sequence $0,a,0$. (c) $(\F S^hx)_f=e^{-2\pi\mathrm{i}fh/N}(\F x)_f$.
 \end{proof}
 
-\section*{Section 5 of the paper}
+\subsection*{Section 5 of the paper}
 \begin{result}{Proposition 3 (When the index is zero)}
 $I(T)=0$ if and only if $D_T$ is connected.
 \end{result}
@@ -52,7 +62,7 @@ By Proposition~3, $D_T$ is disconnected. Let $A$ be one of its connected compone
 (a) Each of the $|T|-1$ tree edges has weight in $[0,1]$, and cosine similarity ignores scale. (b) Expand the square. The set of minimum spanning trees depends only on the order of the edge weights, because Kruskal's algorithm only compares them, and $w\mapsto2-2w$ reverses the order. Sum $w_{ij}=1-\frac12d_{ij}^2$ over the tree edges.
 \end{proof}
 
-\section*{Section 6 of the paper}
+\subsection*{Section 6 of the paper}
 \begin{result}{Theorem 4}
 Let $x\in\R^N_{\ge0}$ with $\norm{x}_2^2>x_0^2$. Then
 \[
@@ -66,4 +76,141 @@ Let $C=\F x$. Since $x\ge0$, $|C_f|\le\sum_tx_t=C_0=\norm{x}_1$, so $\norm{C}_\i
 \]
 \qed
 \end{proof}
+
+\section{Further results on the two scores}\label{s:results}
+
+\subsection*{The product in the diversity index}
+\begin{remark}[The product must be conjugated]\label{rem:reflection}
+If the dot product of two spectra is formed without conjugation, and the Euclidean norms in the denominator are kept, the result is different: for real $x,y$,
+$\sum_f(\F x)_f(\F y)_f=N\sum_tx_t\,y_{(-t)\bmod N}$,
+because $\sum_fe^{-2\pi\mathrm{i}f(t+s)/N}$ equals $N$ when $t+s\equiv0\pmod N$ and $0$ otherwise. This compares month $t$ of one user with month $N-t$ of the other. Two users who burst in the same month $s\notin\{0,N/2\}$ would then get weight zero. Proposition~3 still holds with $\supp(x_j)$ replaced by its reflection, but the index no longer measures co-activity.
+\end{remark}
+
+\subsection*{Range of the consistency score}
+\begin{corollary}\label{cor:bounds}
+(a) If $x_0=0$ then $\kappa_{\mathrm{sp}}=\sqrt{(N-1)/N}\,\kappa(x)$, which lies between $\sqrt{(N-1)/N}$ and $(N-1)/\sqrt N$.
+(b) For constant $x$, $\kappa_{\mathrm{sp}}=\sqrt N$.
+(c) $\kappa_{\mathrm{sp}}$ does not change when $x$ is scaled. It does change when months are permuted: moving activity into month $0$ raises it, and it is undefined when all activity is in month $0$.
+\end{corollary}
+\begin{proof}
+By Theorem~4. For (a), $x_0=0$ gives $|\supp(x)|\le N-1$, and $1\le\kappa^2\le|\supp(x)|$. For (c), the denominator $\norm{x}_2^2-x_0^2$ decreases when activity moves into month $0$.
+\end{proof}
+
+\subsection*{Averaging and consistency}
+\begin{proposition}[Averaging]\label{prop:avg}
+For non-negative $x_1,\dots,x_m$ with mean $\mu$, $\kappa(\mu)\ge\min_i\kappa(x_i)$. If the supports are pairwise disjoint and all $x_i$ have the same $\ell_1$ and $\ell_2$ norms, then $\kappa(\mu)=\sqrt m\,\kappa(x_1)$.
+\end{proposition}
+\begin{proof}
+The score $\kappa$ ignores scale, so we may replace $\mu$ by $\sum x_i$. For non-negative vectors the $\ell_1$ norm is additive, $\norm{\sum x_i}_1=\sum\norm{x_i}_1$, and the $\ell_2$ norm satisfies the triangle inequality, $\norm{\sum x_i}_2\le\sum\norm{x_i}_2$. Hence
+\[ \kappa\big(\textstyle\sum x_i\big)\ \ge\ \frac{\sum\norm{x_i}_1}{\sum\norm{x_i}_2}\ \ge\ \min_i\kappa(x_i). \] With disjoint supports, $\norm{\sum x_i}_2^2=\sum\norm{x_i}_2^2$, and the second claim is a direct computation.
+\end{proof}
+A centre can therefore look consistent only because its members burst at \emph{different} times. The stopping rule guards against the extreme case. If the supports in a cluster are pairwise disjoint, then $D_T$ is a complete graph, so $I(T)=0$ by Proposition~3, and the cluster is re-clustered.
+
+\section{Remarks}\label{s:remarks}
+
+\paragraph{The squared distance.} The squared distance violates the triangle inequality, but $k$-means never uses that inequality. The squared distance is a Bregman divergence, and for every Bregman divergence the mean is the best centre~\cite{banerjee2005bregman}. It also satisfies $\norm{x-z}^2\le2(\norm{x-y}^2+\norm{y-z}^2)$. Together with the optimality of the mean, this is what the $O(\log k)$ guarantee of $k$-means++ uses~\cite{arthur2007kmeanspp}.
+
+\paragraph{What a level of the hierarchy does.} By Corollary~1 each level removes a bounded number of heavy users. Heuristically, it also lowers the scale of the remaining giant cluster by a constant factor, and for data of a fixed size a few levels reach the scale of the typical user. This is what we observe in Section~7 of the paper, but we have no theorem for this positive part. As $n$ grows the number of levels has to grow as well. We conjecture that depth $\Theta(\log n)$ is necessary and sufficient before no cluster contains a constant fraction of the users.
+
+\section{Further experiments}\label{s:experiments}
+
+\subsection*{Checks of Theorems 1 and 4}
+We ran Lloyd's algorithm on $X$ and on $\F X$ from the same random data points, on $20$ samples with $\alpha=1.2$. When distances are rounded to $10^{-6}$, so that ties break the same way, the final partitions were identical in all $20$ samples, as Theorem~1 requires. In plain floating point they were identical in only $3$: squared distances between integer vectors are integers, so on average $19$ users per sample are exactly tied between two initial centres, and rounding breaks these ties differently in the two domains. The closed form of Theorem~4 agreed with the spectral computation to within $1.4\times10^{-15}$ for all $400$ users of a sample with $\alpha=1.2$, and a constant series scored $\sqrt{28}=5.2915$.
+
+\subsection*{Tail index of the real datasets}
+We call a cut-off admissible if it leaves at least $50$ users. Only ESM is clearly in the regime $\alpha<2$: its estimate stays between $1.04$ and $1.54$ for every admissible cut-off. The StackExchange estimate is within one standard error of $2$. It ranges from $1.77$ to $2.13$, and three of its seven admissible cut-offs give a value above $2$. The LKML volumes do not follow a clean power law. The estimate tends to rise with the cut-off, from $0.82$ at the smallest cut-off to values above $2$ at the largest, with a maximum of $2.26$, and the selected cut-off keeps only $8\%$ of the users, so the standard error understates the uncertainty. We did not test the power law against alternatives such as a lognormal.
+
+\subsection*{Equal numbers of clusters}
+Table~\ref{tab:equalk} runs the hierarchy with the threshold $\delta=t(|T|-1)$ and compares it with flat $k$-means that has as many clusters as the hierarchy returned in the same run. By Proposition~4(a), $t=1$ already means that every cluster is split. The rows with $t=\infty$ are the hierarchies of Tables~4 and~1 of the paper, and the synthetic rows with $t=0$ are those of Table~1 of the paper. The other hierarchies and all flat runs use a second random stream on the same data. Flat runs with the same number of clusters keep the best of five restarts.
+
+\begin{table}[ht]
+\centering
+\caption{The hierarchy with threshold $\delta=t(|T|-1)$ and at most three levels, and flat $k$-means with as many clusters as the hierarchy returned in the same run. ``Largest'' is the share of users in the largest cluster. Means over $10$ runs for the real data, with the range in brackets, and over $40$ draws for the synthetic data ($n=400$, $N=28$).}\label{tab:equalk}
+\setlength{\tabcolsep}{4pt}\small
+\begin{tabular}{llccccc}
+\toprule
+& & \multicolumn{3}{c}{Hierarchy} & \multicolumn{2}{c}{Flat, same $k$} \\
+\cmidrule(lr){3-5}\cmidrule(lr){6-7}
+Data & $t$ & clusters & largest & singletons & largest & singletons \\
+\midrule
+ESM & 0.0 & 24.4 & 0.24 [0.12, 0.43] & 6.6 & 0.52 [0.39, 0.65] & 10.0 \\
+ESM & 0.1 & 42.4 & 0.13 [0.09, 0.22] & 11.6 & 0.31 [0.16, 0.45] & 18.3 \\
+ESM & 0.25 & 64.9 & 0.13 [0.07, 0.23] & 21.1 & 0.19 [0.11, 0.28] & 30.2 \\
+ESM & $\infty$ & 108.1 & 0.13 [0.08, 0.19] & 53.0 & 0.08 [0.06, 0.17] & 53.5 \\
+StackEx. & 0.0 & 20.8 & 0.22 [0.11, 0.37] & 4.3 & 0.35 [0.21, 0.51] & 7.0 \\
+StackEx. & 0.1 & 48.7 & 0.11 [0.08, 0.13] & 20.8 & 0.14 [0.07, 0.36] & 23.9 \\
+StackEx. & 0.25 & 61.3 & 0.08 [0.06, 0.09] & 32.6 & 0.10 [0.06, 0.15] & 35.4 \\
+StackEx. & $\infty$ & 55.0 & 0.07 [0.06, 0.09] & 26.6 & 0.10 [0.08, 0.15] & 29.4 \\
+LKML & 0.0 & 28.0 & 0.17 [0.13, 0.23] & 2.5 & 0.73 [0.66, 0.82] & 8.7 \\
+LKML & 0.1 & 109.9 & 0.21 [0.12, 0.32] & 21.5 & 0.37 [0.31, 0.48] & 45.1 \\
+LKML & 0.25 & 146.8 & 0.17 [0.12, 0.27] & 43.7 & 0.30 [0.21, 0.36] & 61.4 \\
+LKML & $\infty$ & 226.0 & 0.19 [0.09, 0.38] & 95.2 & 0.20 [0.13, 0.28] & 99.3 \\
+\midrule
+$\alpha=1.0$ & 0.0 & 16.3 & 0.74 & 7.5 & 0.88 & 10.8 \\
+$\alpha=1.0$ & 0.1 & 41.5 & 0.44 & 17.4 & 0.62 & 26.7 \\
+$\alpha=1.0$ & 0.25 & 50.7 & 0.44 & 24.5 & 0.54 & 32.9 \\
+$\alpha=1.0$ & $\infty$ & 50.5 & 0.46 & 25.0 & 0.57 & 32.5 \\
+$\alpha=1.5$ & 0.0 & 27.3 & 0.24 & 6.0 & 0.57 & 12.3 \\
+$\alpha=1.5$ & 0.1 & 56.6 & 0.20 & 19.2 & 0.30 & 27.9 \\
+$\alpha=1.5$ & 0.25 & 78.6 & 0.22 & 35.5 & 0.20 & 40.7 \\
+$\alpha=1.5$ & $\infty$ & 96.0 & 0.21 & 49.7 & 0.16 & 51.7 \\
+$\alpha=2.5$ & 0.0 & 28.2 & 0.14 & 2.9 & 0.32 & 7.0 \\
+$\alpha=2.5$ & 0.1 & 58.6 & 0.10 & 17.8 & 0.16 & 20.3 \\
+$\alpha=2.5$ & 0.25 & 96.8 & 0.10 & 42.7 & 0.09 & 41.2 \\
+$\alpha=2.5$ & $\infty$ & 151.1 & 0.09 & 85.0 & 0.06 & 79.2 \\
+$\alpha=4.0$ & 0.0 & 28.4 & 0.12 & 2.2 & 0.23 & 3.5 \\
+$\alpha=4.0$ & 0.1 & 56.6 & 0.09 & 14.1 & 0.13 & 14.5 \\
+$\alpha=4.0$ & 0.25 & 101.1 & 0.07 & 42.0 & 0.07 & 36.6 \\
+$\alpha=4.0$ & $\infty$ & 166.8 & 0.07 & 95.0 & 0.04 & 85.2 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\subsection*{Zipfian volumes}
+Synthetic long-tailed data are often generated in rank-frequency form. We follow the procedure of Agrawal et al.~\cite{agrawal2005ppolap}, who use Zipf parameter $0.5$ and a least frequent element that occurs $5$ times: the user of rank $r$ has volume $V_r=5\,(n/r)^s$, so the least active user has volume $5$, and for $s=0.5$ the total number of posts is about $10n$. Profiles are generated as in Section~7 of the paper, $\sigma_r\sim\mathrm{Dirichlet}(0.3\cdot\mathbf 1)$ with $N=28$, and counts are $x_{r,t}\sim\mathrm{Poisson}(V_r\sigma_{r,t})$, without the factor $N/4$ used there. The volumes are deterministic here and not random Pareto draws, so Theorem~3 applies only by analogy, with $\alpha=1/s$. Table~3 of the paper reports flat $k$-means with $k=10$ and five restarts.
+
+For $s=0.75$ and $s=1$, the share of users outside the giant cluster tends to zero, and for $s=1$ their number is almost constant, between $18$ and $35$ while $n$ grows by a factor of $100$. For $s=0.25$, about half of the users stay outside the largest cluster for every $n$. At $s=0.5$, where our results make no claim, the share settles near $23\%$, so there is no collapse. The grid is coarse: it only places the change of behaviour between $s=0.5$ and $s=0.75$.
+
+\subsection*{Exact optima in one dimension}
+Table~1 of the paper is the main synthetic experiment of Section~7 of the paper, and Table~2 of the paper is its scaling test with Lloyd's algorithm. Lloyd's algorithm may stop at a local optimum, so it cannot test Theorem~3 directly. In one dimension an optimal $k$-means clustering consists of intervals and can be computed exactly by dynamic programming. We take $N=1$, so that $x_i=V_i$, with Pareto volumes and $\alpha=1.2$. Table~\ref{tab:exact} reports the number of users outside the largest optimal cluster.
+
+\begin{table}[ht]
+\centering
+\caption{Exact one-dimensional $k$-means, $\alpha=1.2$. Mean number of users outside the largest optimal cluster over $20$ draws, with the range in parentheses.}\label{tab:exact}
+\begin{tabular}{lcccc}
+\toprule
+$k$ & $n=200$ & $n=800$ & $n=3200$ & $n=12800$ \\
+\midrule
+2 & 4.5 (1--22) & 4.8 (1--14) & 7.0 (1--34) & 2.5 (1--8) \\
+3 & 13.1 (3--34) & 15.2 (3--50) & 32.2 (4--117) & 15.8 (2--77) \\
+5 & 36.6 (19--67) & 64.7 (5--140) & 123.8 (20--273) & 123.8 (20--306) \\
+10 & 88.8 (44--120) & 236.7 (147--317) & 679.5 (303--908) & 1103.7 (402--1906) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The standard errors of the means at $n=12800$ are $0.5$, $4.1$, $16.5$ and $100$ for $k=2,3,5,10$. For $k=2$ and $k=3$ the means show no trend in $n$, as the theorem states. For $k=5$ the means at $n=3200$ and $n=12800$ are both $124$, with standard errors near $16$, so they are statistically indistinguishable, but two sample sizes do not establish a plateau. For $k=10$ it is still growing at $n=12800$, although the share of users outside the giant cluster falls from $44\%$ to $8.6\%$. Growth of the kind seen in Table~2 of the paper therefore need not be an effect of local optima. This suggests that $K$ grows quickly with $k$, and that for $k=10$ the limit is reached only at sample sizes much larger than ours.
+
+\section{Implementation notes}\label{s:impl}
+These notes are based on the Octave, C++ and R code that accompanies~\cite{sinha2020hierarchical}.
+\begin{itemize}
+\item \emph{Clustering.} Lloyd's algorithm. The number of clusters is an argument, and~\cite{sinha2020hierarchical} reports $k=10$. The initial centres are $k$ data points chosen at random. The distance from a point to a centre is the sum of squared moduli of the coefficient differences. A centre is the complex mean of its members. Iteration stops when the cost improves by less than $10^{-3}$. The released file checks that its input is real, so this check has to be removed before it accepts spectra. The iteration itself is as described. By default an empty cluster raises an error. The optional fallback, which should move the farthest point into the empty cluster, always moves the last point. Our scripts keep the old centre instead.
+\item \emph{Diversity index.} For a cluster $T$, form the complete graph on $T$ with edge weights equal to the cosine similarity
+\[
+  w_{ij}=\frac{\ip{u_i}{u_j}}{\norm{u_i}\,\norm{u_j}},
+\]
+where $u_i$ is either the count vector or its DFT. A C++ program runs Kruskal's algorithm~\cite{kruskal1956shortest} with edges in increasing order and returns the total weight $I(T)$ of the minimum spanning tree. Octave's \texttt{dot} conjugates its first argument, so by Lemma~1 both choices of $u_i$ give the same weight (see also Remark~\ref{rem:reflection}). The variant for spectra also takes the modulus, which changes nothing for per-user spectra of counts. Both variants skip the first column of their input, which holds a label. The C++ program stores at most $10^6$ edges, so it cannot handle a cluster with more than about $1400$ users. The similarity files that we could match to saved clusters agree with the cosine similarity of the raw counts to machine precision ($2.2\times10^{-16}$).
+\item \emph{Consistency score.} For a vector $v\in\C^N$ with mean $\bar v$, let $s(v)^2=\frac1{N-1}\sum_f|v_f-\bar v|^2$. This is what Octave's \texttt{std} computes for complex input. The score of a centre $c$ is $\kappa_{\mathrm{sp}}(c)=1/s(c/\norm{c}_\infty)$.
+\item \emph{Baselines.} DTW clustering used the R package \texttt{dtwclust} in hierarchical mode with $30$ clusters. Local search used the code of~\cite{ocallaghan2002streaming}. That code minimises the sum of \emph{squared} Euclidean distances to the chosen medians, which is the $k$-means objective restricted to centres at data points.
+\end{itemize}
+
+\begin{thebibliography}{9}
+\bibitem{agrawal2005ppolap} Agrawal, R., Srikant, R., Thomas, D.: Privacy preserving OLAP. In: Proceedings of the 2005 ACM SIGMOD International Conference on Management of Data, pp. 251--262 (2005)
+\bibitem{arthur2007kmeanspp} Arthur, D., Vassilvitskii, S.: k-means++: The advantages of careful seeding. In: Proceedings of the 18th Annual ACM-SIAM Symposium on Discrete Algorithms (SODA), pp. 1027--1035 (2007)
+\bibitem{banerjee2005bregman} Banerjee, A., Merugu, S., Dhillon, I.S., Ghosh, J.: Clustering with Bregman divergences. Journal of Machine Learning Research 6, 1705--1749 (2005)
+\bibitem{kruskal1956shortest} Kruskal, J.B.: On the shortest spanning subtree of a graph and the traveling salesman problem. Proceedings of the American Mathematical Society 7(1), 48--50 (1956)
+\bibitem{ocallaghan2002streaming} O'Callaghan, L., Mishra, N., Meyerson, A., Guha, S., Motwani, R.: Streaming-data algorithms for high-quality clustering. In: Proceedings of the 18th International Conference on Data Engineering (ICDE), pp. 685--694 (2002)
+\bibitem{sinha2020hierarchical} Sinha, P., Dey, L., Mitra, P., Thomas, D.: A hierarchical clustering algorithm for characterizing social media users. In: Companion Proceedings of the Web Conference 2020, pp. 353--362. ACM (2020)
+\end{thebibliography}
 \end{document}
