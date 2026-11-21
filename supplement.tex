@@ -106,6 +106,15 @@ The score $\kappa$ ignores scale, so we may replace $\mu$ by $\sum x_i$. For non
 \end{proof}
 A centre can therefore look consistent only because its members burst at \emph{different} times. The stopping rule guards against the extreme case. If the supports in a cluster are pairwise disjoint, then $D_T$ is a complete graph, so $I(T)=0$ by Proposition~3, and the cluster is re-clustered.
 
+\subsection*{Tail domination under finite variance}
+The following statement complements Theorem~2 of the paper, which treats the cost for general $\alpha$ in part (i) and for $\alpha<2$ in part (ii).
+\begin{proposition}\label{prop:finite}
+Assume the model of Section~4 of the paper with $\alpha>2$, and fix $k$ and $\tau$. Then $\opt_k(X_n)/n$ converges almost surely to a positive constant. The fraction of $\sum_i\norm{x_i}^2$ that comes from the ordinary users $B_\tau=\{i:V_i\le\tau\}$ converges to a limit that is positive for every $\tau>1$ and tends to one as $\tau\to\infty$.
+\end{proposition}
+\begin{proof}
+Here $\mathbb{E}\norm{x}^2\le\mathbb{E}V^2<\infty$. Then $\opt_k(X_n)/n$ converges almost surely to the population $k$-means risk. This part of Pollard's argument for the strong consistency of $k$-means (cited in the paper) does not need uniqueness of the optimal centres: it uses that near-optimal centres stay in a compact set, which holds because the risk with $k$ centres is strictly below the risk with $k-1$, and a uniform law of large numbers on that set. The risk is positive because $\norm{x}_1=V$ has a continuous law, so the law of $x$ is not supported on $k$ points. The last claim is the law of large numbers.
+\end{proof}
+
 \section{Remarks}\label{s:remarks}
 
 \paragraph{The squared distance.} The squared distance violates the triangle inequality, but $k$-means never uses that inequality. The squared distance is a Bregman divergence, and for every Bregman divergence the mean is the best centre~\cite{banerjee2005bregman}. It also satisfies $\norm{x-z}^2\le2(\norm{x-y}^2+\norm{y-z}^2)$. Together with the optimality of the mean, this is what the $O(\log k)$ guarantee of $k$-means++ uses~\cite{arthur2007kmeanspp}.
@@ -114,7 +123,7 @@ A centre can therefore look consistent only because its members burst at \emph{d
 
 \paragraph{Reading Theorem 1.} Informally, the DFT rotates the data and stretches it by $\sqrt N$. Distances between users do not change relative to each other, so nothing about the clustering changes either. The DFT is still useful, because $|(\F c)_f|$ shows which periodicities dominate a centre $c$. The theorem also shows that the method is sensitive to timing. The modulus is taken after the coefficients are subtracted, so the phase is kept, and the phase encodes when activity happens.
 
-\paragraph{Reading Theorem 2.} Part (ii) says that, among centre sets that keep a centre near the origin, the objective cannot tell one partition of the ordinary users from another, to first order. Theorem~3 shows that optimal centre sets are of this kind at the scale that matters. With unsquared distances, as in a true $k$-median objective, the heavy users contribute about $M_n=n^{1/\alpha}$ and the ordinary users about $n$, so the tail dominates only when $\alpha<1$.
+\paragraph{Reading Theorem 2.} Part (ii) says that, among centre sets that keep a centre near the origin, the objective cannot tell one partition of the ordinary users from another, to first order. Theorem~3 shows that optimal centre sets are of this kind at the scale that matters. With unsquared distances, as in a true $k$-median objective, the heavy users contribute about $M_n=n^{1/\alpha}$ and the ordinary users about $n$, so the tail dominates only when $\alpha<1$. The local search code of~\cite{ocallaghan2002streaming} also minimises squared distances, so part (ii) applies to it. We do not prove a giant-cluster theorem for these two variants.
 
 \paragraph{The constant of Theorem 3.} The exact optima of Section~\ref{s:experiments} suggest that the constant $K$ grows quickly with $k$. The proof suggests the same for $N$, because its constant $\eta$ shrinks with both.
 
@@ -226,6 +235,8 @@ where $u_i$ is either the count vector or its DFT. A C++ program runs Kruskal's 
 \paragraph{The model and the data.} The results of Section~4 of the paper are for a continuous model. Real counts are integers, so the synthetic experiments add Poisson noise to the model.
 
 \paragraph{Why we recommend $\kappa$.} The score $\kappa$ does not depend on the order of the months. That is appropriate, because the score is meant to measure how evenly activity is spread, and timing is already handled by the clustering.
+
+\paragraph{Local search and cluster counts on the real data.} The local search baseline of~\cite{ocallaghan2002streaming}, which also minimises squared distances, behaves in the same way on ESM: in the assignment to its $11$ medians that was saved for~\cite{sinha2020hierarchical}, one cluster contains $304$ of the $401$ users and four clusters are singletons. At depth $3$ with $\delta=\infty$ the hierarchy returns on average $108$, $55$ and $226$ clusters on ESM, StackExchange and LKML, of which $53$, $27$ and $95$ are singletons.
 
 \paragraph{The consistency score on the three datasets.} With $N=28$, $66$ and $100$ months, the value of the score for perfectly even activity is $\sqrt N=5.29$, $8.12$ and $10$. A user who posts evenly over many months scores high, and a user with one burst scores low.
 
